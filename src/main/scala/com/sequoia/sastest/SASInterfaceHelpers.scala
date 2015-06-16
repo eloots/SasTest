@@ -20,12 +20,6 @@ import java.util.UUID
 
 import com.sas.iom.SAS.ILanguageService
 import org.apache.commons.io.FileUtils
-import com.sequoia.sastest.tablerowspecs._
-
-
-trait HelperFunctions {
-
-}
 
 object SASInterfaceHelpers {
 
@@ -64,13 +58,13 @@ object SASInterfaceHelpers {
   def sendTestData(
                     testData: List[tablerowspecs.SASDataRowType],
                     sasTestInputDataset: String,
-                    fieldSpec: List[FieldSpec]
+                    sasDataRowSpec: SASDataRowSpec
                     )(implicit sasLanguage: ILanguageService): SASLoggingOutput = {
 
     val inputDelimitedFileName = s"/home/lootser/sasuser.v94/FOD_VVVL/testData/${UUID.randomUUID()}"
     val testDataCSV = testData.map (person => person.toDelimString)
     DelimitedFileRW.writeDelimitedFile(testDataCSV, inputDelimitedFileName)
-    val importCode = sasImportCode(sasTestInputDataset, inputDelimitedFileName, fieldSpec)
+    val importCode = sasImportCode(sasTestInputDataset, inputDelimitedFileName, sasDataRowSpec.sasFieldSpec)
     val sasLoggingOutput = executeSASquery(sasLanguage, importCode)
     FileUtils.forceDelete(new java.io.File(inputDelimitedFileName))
     sasLoggingOutput
@@ -92,7 +86,7 @@ object SASInterfaceHelpers {
          """.stripMargin
     val sasLoggingOutput = executeSASquery(sasLanguage, SASexportCode)
     val rawOutputData = new FileLineTraversable(new File(outputDelimitedFileName)).map(_.split("\t", sasDataRowSpec.arity)).toList
-    val columnMapping = (rawOutputData.head.zipWithIndex.map {case (fld, index) => sasDataRowSpec.fieldIndexes(fld) -> index}).toMap
+    val columnMapping = (rawOutputData.head.zipWithIndex.map {case (fld, index) => sasDataRowSpec.fieldIndexes(fld.toLowerCase) -> index}).toMap
     FileUtils.forceDelete(new java.io.File(outputDelimitedFileName))
     TestOutput(sasLoggingOutput, columnMapping, rawOutputData)
   }

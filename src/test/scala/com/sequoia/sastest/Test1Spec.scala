@@ -22,13 +22,11 @@ trait PersonData {
   import tablerowspecs.Person
   val testData1 = List(
     Person("Pjotr Brildijk",     Some(0), Some(Date9("10sep1959").toLocalDate)),
-    Person("Saskia Botervloot",  Some(3), Some(Date9("7Mar1967").toLocalDate)),
-    Person("Alex Chernomanski",  None,    Some(Date9("1FEB1964").toLocalDate)),
-    Person("Sandra Vole",        None, Some(Date9("17May1965").toLocalDate)),
-    Person("Srabra Melontoe",    Some(2), None)
+    Person("Saskia Botervloot",  Some(3), Some(Date9( "7Mar1967").toLocalDate)),
+    Person("Alex Chernomanski",  None,    Some(Date9( "1FEB1964").toLocalDate)),
+    Person("Sandra Vole",        None,    Some(Date9("17May1965").toLocalDate)),
+    Person("Srabra Melontoe",    Some(2), Some(Date9( "8May1983").toLocalDate))
   )
-
-
 }
 
 class Test1Spec extends BaseSASSpec with PersonData {
@@ -40,7 +38,7 @@ class Test1Spec extends BaseSASSpec with PersonData {
       val sasTestInputDataset = "sbtvpdat.testDataTableSAS"
       val sasTestOutputDataset = "sbtvpdat.testOutDataTableSAS"
 
-      sendTestData(testData1, sasTestInputDataset, Person.sasFieldSpec)
+      sendTestData(testData1, sasTestInputDataset, Person)
 
       val SASTestCode =
         s"""%include '/home/lootser/sasuser.v94/FOD_VVVL/code/cpHelpDS.sas';
@@ -48,17 +46,13 @@ class Test1Spec extends BaseSASSpec with PersonData {
          """.stripMargin
       val SASLoggingOutput(saslogRun) = executeSASquery(sasLanguage, SASTestCode)
 
-
       val TestOutput(_, columnMapping, rawOutputData) =
         retrieveSasTable(sasTestOutputDataset, PersonStats)
 
-      val testResult = rawOutputData.tail
-        .map {
-        case values => PersonStats(values(columnMapping(0)).toInt, values(columnMapping(1)).toDouble)
-      }
+      val testResult = PersonStats.mapRawToPersonStats(rawOutputData.tail, columnMapping)
 
       testResult.head.child_count shouldBe 5
-      testResult.head.avg_age shouldBe 51.0 +- 0.001
+      testResult.head.avg_age shouldBe 47.2 +- 0.0000000001
 
     }
   }

@@ -42,4 +42,8 @@ object Formats {
       case _ => ""
     }
   }
+
+  def formattedDate(date: LocalDate, format: DateTimeFormatter): String = {
+    date.format(format)
+  }
 }

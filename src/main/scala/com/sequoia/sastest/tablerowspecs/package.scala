@@ -15,24 +15,22 @@
  */
 package com.sequoia.sastest
 
-/**
- * Created by ericloots on 12/06/15.
- */
 package object tablerowspecs {
   trait SASDataRowType {
     def toDelimString: String
   }
 
   trait SASDataRowSpec {
+    def sasFieldSpec: List[FieldSpec]
     def arity: Int
     def fieldIndexes: FieldIndexes
   }
 
-  case class FieldSpec(
-                        sasFieldName: String,
+  case class FieldSpec( sasFieldName: String,
                         inputFieldType: InputFieldType = InputNumericField,
                         sasFieldLength: String = "",
                         sasFieldInformat: String = "",
                         sasFieldFormat: String = "",
-                        sasFieldType: SASFieldType = SASNumericField)
+                        sasFieldType: SASFieldType = SASNumericField
+                      )
 }

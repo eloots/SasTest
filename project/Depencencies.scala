@@ -23,6 +23,7 @@ object Version {
   val scalaTest    = "2.2.4"
   val commonsio    = "1.3.2"
   val scalactic    = "2.2.4"
+  val scopt        = "3.3.0"
 }
 
 object Library {
@@ -32,8 +33,9 @@ object Library {
   val logbackClassic = "ch.qos.logback"         %  "logback-classic"          % Version.logback
   val scalaParsers   = "org.scala-lang.modules" %% "scala-parser-combinators" % Version.scalaParsers
   val scalaTest      = "org.scalatest"          %% "scalatest"                % Version.scalaTest
-  val commonsio      = "org.apache.commons"     % "commons-io"                % Version.commonsio
-  val scalactic      = "org.scalactic"          % "scalactic_2.11"            % Version.scalactic
+  val commonsio      = "org.apache.commons"     %  "commons-io"               % Version.commonsio
+  val scalactic      = "org.scalactic"          %  "scalactic_2.11"           % Version.scalactic
+  val scopt          = "com.github.scopt"       %% "scopt"                    % Version.scopt
 }
 
 object Dependencies {
@@ -42,6 +44,7 @@ object Dependencies {
 
   val SAS_Testing = List(
     commonsio,
+    scopt,
     scalaParsers,
     scalactic,
     logbackClassic,

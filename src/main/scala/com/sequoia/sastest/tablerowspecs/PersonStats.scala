@@ -15,31 +15,33 @@
  */
 package com.sequoia.sastest.tablerowspecs
 
-//import com.sequoia.sastest.RowTypes.{SASDataRowType, SASDataRowSpec}
-import com.sequoia.sastest.{SASNumericField, InputNumericField}
-import com.sequoia.sastest.tablerowspecs._
+// Code generated with following command:
+//
+//   genSASFieldSpec --sasNumericFieldTypes child_count=Long,avg_age=Double --noMissingValueFields avg_age,child_count sbtvpdat.TESTOUTDATATABLESAS PersonStats
+//
+// ----- Generated code BEGIN -----
+import com.sequoia.sastest._
 
 case object PersonStats extends SASDataRowSpec {
   def sasFieldSpec = List(
-    FieldSpec(
-      sasFieldName = "CHILD_COUNT",
-      inputFieldType = InputNumericField,
-      sasFieldType = SASNumericField),
-    FieldSpec(
-      sasFieldName = "AVG_AGE",
-      inputFieldType = InputNumericField,
-      sasFieldType = SASNumericField)
-  )
+    FieldSpec(sasFieldName = "avg_age", inputFieldType = InputNumericField),
+    FieldSpec(sasFieldName = "child_count", inputFieldType = InputNumericField))
 
   val fieldIndexes: Map[String, Int] = {
-    (sasFieldSpec
-      .map (_.sasFieldName)).zipWithIndex
+    sasFieldSpec
+      .map (_.sasFieldName)
+      .zipWithIndex
       .toMap
   }
 
   val arity = sasFieldSpec.length
+
+  def mapRawToPersonStats(data: OutputData, columnMapping: ColumnMapping): List[PersonStats] = {
+    data map { values => PersonStats(values(columnMapping(0)).toDouble, values(columnMapping(1)).toLong) }
+  }
 }
 
-case class PersonStats(child_count: Int, avg_age: Double) extends SASDataRowType {
-  def toDelimString: String = s"""$child_count\t$avg_age"""
+case class PersonStats(avg_age: Double, child_count: Long) extends SASDataRowType {
+  def toDelimString: String = s"""${avg_age}\t${child_count}"""
 }
+// ----- Generated code END   -----
