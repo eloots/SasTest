@@ -1,6 +1,8 @@
 ScalaTest for SAS unit & integration tests
 ==========================================
 
+[![Join the chat at https://gitter.im/eloots/ScalaTestSas](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/eloots/ScalaTestSas?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ###Overview
 
 Demonstration of using ScalaTest for writing Unit and integration tests for  applications written in Base SAS.
