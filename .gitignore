@@ -1,0 +1,5 @@
+project/target
+target
+.idea
+sasAkkaLog.log
+src/main/resources/reference.conf
